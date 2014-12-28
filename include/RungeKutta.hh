@@ -18,12 +18,7 @@ public:
 	}
 
 	void Step(double dT){
-		F k1 = m_der(m_current, m_time)*dT;
-		F k2 = m_der(m_current + 0.5*k1, m_time + 0.5*dT)*dT;
-		F k3 = m_der(m_current + 0.5*k2, m_time + 0.5*dT)*dT;
-		F k4 = m_der(m_current + k3, m_time + dT)*dT;
-		m_current += (k1 + 2*k2 + 2*k3 + k4) * (1.0/6.0);
-		m_time += dT;
+		RungeKuttaStep(m_current, m_time, m_der, dT);
 	}
 
 	void Step(){ Step(m_deltaT); }
@@ -36,5 +31,15 @@ private:
 	double m_deltaT;
 	double m_time;
 };
+
+template<typename F, typename D>
+void RungeKuttaStep(F& state, double& time, D der, double dT){
+	F k1 = der(state, time)*dT;
+	F k2 = der(state + k1*0.5, time + 0.5*dT)*dT;
+	F k3 = der(state + k2*0.5, time + 0.5*dT)*dT;
+	F k4 = der(state + k3, time + dT)*dT;
+	state = state + (k1 + k2*2 + k3*2 + k4) * (1.0/6.0);
+	time += dT;
+}
 
 #endif /* _RUNGEKUTTA_H_ */

@@ -2,3 +2,7 @@
 main
 .*~
 .sconsign.dblite
+build
+linux
+win32
+win64
