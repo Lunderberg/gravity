@@ -34,6 +34,8 @@ public:
   void AddSphere(Sphere sp);
   void Step(double dT);
 
+  const GalaxyContents& GetState(){return state;}
+
   friend std::ostream& operator<<(std::ostream& out, const Galaxy& gal);
 
 private:
